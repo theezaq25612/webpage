@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Store - Premium eBooks & Software</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#10b981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .search-input:focus {
+            outline: none;
+        }
+        .cart-dropdown, .user-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        .cart-trigger:hover .cart-dropdown,
+        .user-trigger:hover .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .product-card:hover .quick-actions {
+            opacity: 1;
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        .product-image {
+            transition: transform 0.3s ease;
+        }
+        .slide-cart {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        .slide-cart.open {
+            transform: translateX(0);
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+        .custom-checkbox input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 18px;
+            height: 18px;
+            background-color: #fff;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+        }
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+        .custom-checkbox .checkmark:after {
+            left: 5px;
+            top: 1px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="#" class="text-2xl font-['Pacifico'] text-primary">logo</a>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="w-2/5 relative">
+                <input type="text" placeholder="Search for eBooks, software, and more..." class="search-input w-full py-2 px-4 pr-10 border border-gray-200 rounded-button text-sm">
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400">
+                    <i class="ri-search-line"></i>
+                </div>
+            </div>
+            
+            <!-- Navigation Icons -->
+            <div class="flex items-center space-x-6">
+                <!-- Cart Icon -->
+                <div class="cart-trigger relative">
+                    <div class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 cursor-pointer">
+                        <i class="ri-shopping-cart-2-line text-lg"></i>
+                        <span class="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+                    </div>
+                    
+                    <!-- Cart Dropdown -->
+                    <div class="cart-dropdown absolute right-0 mt-2 w-80 bg-white rounded shadow-lg p-4 z-10">
+                        <h3 class="font-medium mb-3">Your Cart (3 items)</h3>
+                        <div class="max-h-60 overflow-y-auto">
+                            <!-- Cart Item -->
+                            <div class="flex items-center py-2 border-b">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20ebook%20cover%20for%20programming%20book%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20blue%20color%20scheme&width=80&height=100&seq=1&orientation=portrait" alt="Product" class="w-12 h-16 object-cover object-top rounded">
+                                <div class="ml-3 flex-1">
+                                    <h4 class="text-sm font-medium">Advanced JavaScript Techniques</h4>
+                                    <div class="flex justify-between mt-1">
+                                        <span class="text-sm text-primary font-medium">$24.99</span>
+                                        <div class="text-xs text-gray-500">eBook</div>
+                                    </div>
+                                </div>
+                                <button class="ml-2 text-gray-400 hover:text-gray-600 w-6 h-6 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Cart Item -->
+                            <div class="flex items-center py-2 border-b">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20software%20box%20packaging%20for%20photo%20editing%20software%20with%20clean%20modern%20design%2C%20minimalist%20style&width=80&height=100&seq=2&orientation=portrait" alt="Product" class="w-12 h-16 object-cover object-top rounded">
+                                <div class="ml-3 flex-1">
+                                    <h4 class="text-sm font-medium">PhotoPro X5 Suite</h4>
+                                    <div class="flex justify-between mt-1">
+                                        <span class="text-sm text-primary font-medium">$79.99</span>
+                                        <div class="text-xs text-gray-500">Software</div>
+                                    </div>
+                                </div>
+                                <button class="ml-2 text-gray-400 hover:text-gray-600 w-6 h-6 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Cart Item -->
+                            <div class="flex items-center py-2">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20ebook%20cover%20for%20business%20strategy%20book%20with%20clean%20modern%20design%2C%20minimalist%20style&width=80&height=100&seq=3&orientation=portrait" alt="Product" class="w-12 h-16 object-cover object-top rounded">
+                                <div class="ml-3 flex-1">
+                                    <h4 class="text-sm font-medium">Business Growth Strategies</h4>
+                                    <div class="flex justify-between mt-1">
+                                        <span class="text-sm text-primary font-medium">$19.99</span>
+                                        <div class="text-xs text-gray-500">eBook</div>
+                                    </div>
+                                </div>
+                                <button class="ml-2 text-gray-400 hover:text-gray-600 w-6 h-6 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-3 border-t">
+                            <div class="flex justify-between mb-3">
+                                <span class="font-medium">Subtotal:</span>
+                                <span class="font-medium">$124.97</span>
+                            </div>
+                            <button class="w-full py-2 bg-primary text-white font-medium !rounded-button whitespace-nowrap">Checkout</button>
+                            <button class="w-full py-2 mt-2 border border-gray-200 text-gray-700 font-medium !rounded-button whitespace-nowrap">View Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Account -->
+                <div class="user-trigger relative">
+                    <div class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 cursor-pointer">
+                        <i class="ri-user-line text-lg"></i>
+                    </div>
+                    
+                    <!-- User Dropdown -->
+                    <div class="user-dropdown absolute right-0 mt-2 w-60 bg-white rounded shadow-lg p-4 z-10">
+                        <div class="flex items-center mb-4 pb-3 border-b">
+                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                                <i class="ri-user-line text-gray-500"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-medium">Emily Johnson</h4>
+                                <p class="text-xs text-gray-500">emily.johnson@example.com</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="#" class="flex items-center text-sm py-1.5 text-gray-700 hover:text-primary">
+                                    <i class="ri-user-settings-line mr-3"></i> My Account
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-sm py-1.5 text-gray-700 hover:text-primary">
+                                    <i class="ri-shopping-bag-line mr-3"></i> My Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-sm py-1.5 text-gray-700 hover:text-primary">
+                                    <i class="ri-download-2-line mr-3"></i> Downloads
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-sm py-1.5 text-gray-700 hover:text-primary">
+                                    <i class="ri-heart-line mr-3"></i> Wishlist
+                                </a>
+                            </li>
+                            <li class="pt-2 mt-2 border-t">
+                                <a href="#" class="flex items-center text-sm py-1.5 text-gray-700 hover:text-primary">
+                                    <i class="ri-logout-box-line mr-3"></i> Sign Out
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Navigation -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4">
+            <ul class="flex items-center space-x-8">
+                <li class="relative group py-4">
+                    <a href="#" class="text-gray-700 hover:text-primary font-medium flex items-center">
+                        eBooks <i class="ri-arrow-down-s-line ml-1"></i>
+                    </a>
+                    <div class="absolute left-0 top-full bg-white shadow-lg rounded-md p-4 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20">
+                        <ul class="space-y-2">
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Business & Finance</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Programming & Tech</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Self Development</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Design & Creativity</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Marketing & SEO</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">View All Categories</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="relative group py-4">
+                    <a href="#" class="text-gray-700 hover:text-primary font-medium flex items-center">
+                        Software <i class="ri-arrow-down-s-line ml-1"></i>
+                    </a>
+                    <div class="absolute left-0 top-full bg-white shadow-lg rounded-md p-4 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20">
+                        <ul class="space-y-2">
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Productivity Tools</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Design Software</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Development Tools</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Business Applications</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Security & Utilities</a></li>
+                            <li><a href="#" class="block py-1.5 px-2 text-sm text-gray-700 hover:bg-gray-50 rounded">View All Software</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="py-4">
+                    <a href="#" class="text-gray-700 hover:text-primary font-medium flex items-center">
+                        <span class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full mr-1.5">HOT</span> Deals
+                    </a>
+                </li>
+                <li class="py-4">
+                    <a href="#" class="text-gray-700 hover:text-primary font-medium flex items-center">
+                        <span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full mr-1.5">NEW</span> New Releases
+                    </a>
+                </li>
+                <li class="py-4">
+                    <a href="#" class="text-gray-700 hover:text-primary font-medium">Bestsellers</a>
+                </li>
+                <li class="py-4">
+                    <a href="#" class="text-gray-700 hover:text-primary font-medium">Bundles</a>
+                </li>
+                <li class="py-4">
+                    <a href="#" class="text-gray-700 hover:text-primary font-medium">Support</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-indigo-50 to-indigo-100 overflow-hidden">
+        <div class="container mx-auto px-4 py-16 flex items-center">
+            <div class="w-1/2 pr-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">Discover Premium Digital Products</h1>
+                <p class="text-lg text-gray-600 mb-8">Instant access to thousands of eBooks, software, and digital tools to boost your productivity and skills.</p>
+                <div class="flex space-x-4">
+                    <button class="bg-primary text-white px-6 py-3 font-medium !rounded-button whitespace-nowrap">Browse Collection</button>
+                    <button class="bg-white border border-gray-200 text-gray-700 px-6 py-3 font-medium !rounded-button whitespace-nowrap">View Bestsellers</button>
+                </div>
+                <div class="mt-8 flex items-center text-sm text-gray-500">
+                    <div class="flex items-center mr-6">
+                        <i class="ri-download-cloud-line mr-2 text-primary"></i>
+                        Instant Downloads
+                    </div>
+                    <div class="flex items-center mr-6">
+                        <i class="ri-secure-payment-line mr-2 text-primary"></i>
+                        Secure Payments
+                    </div>
+                    <div class="flex items-center">
+                        <i class="ri-customer-service-2-line mr-2 text-primary"></i>
+                        24/7 Support
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/2 relative">
+                <img src="https://readdy.ai/api/search-image?query=digital%20products%20showcase%20with%20ebooks%20and%20software%20packages%20arranged%20in%20a%20modern%2C%20clean%20layout%20with%20soft%20lighting%2C%20minimalist%20style%2C%20professional%20appearance%2C%20high%20quality%20render%20with%20soft%20shadows&width=600&height=400&seq=4&orientation=landscape" alt="Digital Products" class="rounded-lg shadow-xl object-cover object-top">
+                
+                <!-- Bestseller Overlay -->
+                <div class="absolute -bottom-6 -left-6 bg-white rounded-lg shadow-lg p-4 w-64">
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
+                            <i class="ri-fire-fill"></i>
+                        </div>
+                        <h3 class="ml-2 font-medium text-gray-900">Bestsellers</h3>
+                    </div>
+                    <div class="flex items-center space-x-2 mb-2">
+                        <div class="w-2 h-2 bg-primary rounded-full"></div>
+                        <span class="text-sm">Advanced JavaScript Techniques</span>
+                    </div>
+                    <div class="flex items-center space-x-2 mb-2">
+                        <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+                        <span class="text-sm">PhotoPro X5 Suite</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+                        <span class="text-sm">Business Growth Strategies</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Categories -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-8">Browse by Category</h2>
+            <div class="grid grid-cols-4 gap-6">
+                <!-- Category Card -->
+                <a href="#" class="bg-blue-50 rounded-lg p-6 text-center transition-transform hover:transform hover:scale-105">
+                    <div class="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
+                        <i class="ri-book-open-line text-2xl"></i>
+                    </div>
+                    <h3 class="font-medium text-lg mb-2">eBooks</h3>
+                    <p class="text-sm text-gray-500">Over 10,000 titles across all categories</p>
+                </a>
+                
+                <!-- Category Card -->
+                <a href="#" class="bg-green-50 rounded-lg p-6 text-center transition-transform hover:transform hover:scale-105">
+                    <div class="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-4">
+                        <i class="ri-computer-line text-2xl"></i>
+                    </div>
+                    <h3 class="font-medium text-lg mb-2">Software</h3>
+                    <p class="text-sm text-gray-500">Premium tools for professionals</p>
+                </a>
+                
+                <!-- Category Card -->
+                <a href="#" class="bg-purple-50 rounded-lg p-6 text-center transition-transform hover:transform hover:scale-105">
+                    <div class="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mb-4">
+                        <i class="ri-video-line text-2xl"></i>
+                    </div>
+                    <h3 class="font-medium text-lg mb-2">Video Courses</h3>
+                    <p class="text-sm text-gray-500">Learn from industry experts</p>
+                </a>
+                
+                <!-- Category Card -->
+                <a href="#" class="bg-amber-50 rounded-lg p-6 text-center transition-transform hover:transform hover:scale-105">
+                    <div class="w-16 h-16 mx-auto bg-amber-100 rounded-full flex items-center justify-center text-amber-600 mb-4">
+                        <i class="ri-price-tag-3-line text-2xl"></i>
+                    </div>
+                    <h3 class="font-medium text-lg mb-2">Bundles & Deals</h3>
+                    <p class="text-sm text-gray-500">Save up to 70% on collections</p>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- New Releases -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">New Releases</h2>
+                <a href="#" class="text-primary font-medium flex items-center hover:underline">
+                    View All <i class="ri-arrow-right-line ml-1"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-6">
+                <!-- Product Card -->
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="relative overflow-hidden h-56">
+                        <img src="https://readdy.ai/api/search-image?query=professional%20ebook%20cover%20for%20artificial%20intelligence%20book%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20blue%20and%20white%20color%20scheme%2C%20high%20quality%20render&width=300&height=400&seq=5&orientation=portrait" alt="Product" class="product-image w-full h-full object-cover object-top">
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">New</span>
+                        </div>
+                        <div class="quick-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity">
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-heart-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-shopping-cart-2-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center text-yellow-400 mb-2">
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-half-fill text-sm"></i>
+                            <span class="text-xs text-gray-500 ml-1">(42)</span>
+                        </div>
+                        <h3 class="font-medium mb-1 line-clamp-2 h-12">Artificial Intelligence: The Future of Technology</h3>
+                        <p class="text-sm text-gray-500 mb-2">By Dr. Michael Chen</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-primary font-bold">$29.99</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">$39.99</span>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">eBook</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card -->
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="relative overflow-hidden h-56">
+                        <img src="https://readdy.ai/api/search-image?query=professional%20software%20box%20packaging%20for%20video%20editing%20software%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20red%20and%20black%20color%20scheme%2C%20high%20quality%20render&width=300&height=400&seq=6&orientation=portrait" alt="Product" class="product-image w-full h-full object-cover object-top">
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">New</span>
+                        </div>
+                        <div class="quick-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity">
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-heart-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-shopping-cart-2-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center text-yellow-400 mb-2">
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-line text-sm"></i>
+                            <span class="text-xs text-gray-500 ml-1">(28)</span>
+                        </div>
+                        <h3 class="font-medium mb-1 line-clamp-2 h-12">VideoMaster Pro 2025 - Professional Video Editing</h3>
+                        <p class="text-sm text-gray-500 mb-2">By CreativeSoft Inc.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-primary font-bold">$89.99</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">$119.99</span>
+                            </div>
+                            <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded">Software</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card -->
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="relative overflow-hidden h-56">
+                        <img src="https://readdy.ai/api/search-image?query=professional%20ebook%20cover%20for%20cryptocurrency%20and%20blockchain%20book%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20green%20and%20dark%20blue%20color%20scheme%2C%20high%20quality%20render&width=300&height=400&seq=7&orientation=portrait" alt="Product" class="product-image w-full h-full object-cover object-top">
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">New</span>
+                        </div>
+                        <div class="quick-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity">
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-heart-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-shopping-cart-2-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center text-yellow-400 mb-2">
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <span class="text-xs text-gray-500 ml-1">(56)</span>
+                        </div>
+                        <h3 class="font-medium mb-1 line-clamp-2 h-12">Blockchain Revolution: Cryptocurrency Investment Guide</h3>
+                        <p class="text-sm text-gray-500 mb-2">By Sarah Williams</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-primary font-bold">$24.99</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">$34.99</span>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">eBook</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card -->
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="relative overflow-hidden h-56">
+                        <img src="https://readdy.ai/api/search-image?query=professional%20software%20box%20packaging%20for%20productivity%20software%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20teal%20and%20white%20color%20scheme%2C%20high%20quality%20render&width=300&height=400&seq=8&orientation=portrait" alt="Product" class="product-image w-full h-full object-cover object-top">
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">New</span>
+                        </div>
+                        <div class="quick-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity">
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-heart-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-shopping-cart-2-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center text-yellow-400 mb-2">
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-half-fill text-sm"></i>
+                            <i class="ri-star-line text-sm"></i>
+                            <span class="text-xs text-gray-500 ml-1">(19)</span>
+                        </div>
+                        <h3 class="font-medium mb-1 line-clamp-2 h-12">TaskFlow Pro - Project Management Suite</h3>
+                        <p class="text-sm text-gray-500 mb-2">By ProductivityLabs</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-primary font-bold">$49.99</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">$69.99</span>
+                            </div>
+                            <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded">Software</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Bestsellers -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">Bestsellers</h2>
+                <a href="#" class="text-primary font-medium flex items-center hover:underline">
+                    View All <i class="ri-arrow-right-line ml-1"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-6">
+                <!-- Product Card -->
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                    <div class="relative overflow-hidden h-56">
+                        <img src="https://readdy.ai/api/search-image?query=professional%20ebook%20cover%20for%20javascript%20programming%20book%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20yellow%20and%20dark%20blue%20color%20scheme%2C%20high%20quality%20render&width=300&height=400&seq=9&orientation=portrait" alt="Product" class="product-image w-full h-full object-cover object-top">
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-amber-500 text-white text-xs px-2 py-1 rounded">Bestseller</span>
+                        </div>
+                        <div class="quick-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity">
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-heart-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-shopping-cart-2-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center text-yellow-400 mb-2">
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-half-fill text-sm"></i>
+                            <span class="text-xs text-gray-500 ml-1">(128)</span>
+                        </div>
+                        <h3 class="font-medium mb-1 line-clamp-2 h-12">Advanced JavaScript Techniques for Modern Development</h3>
+                        <p class="text-sm text-gray-500 mb-2">By David Thompson</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-primary font-bold">$24.99</span>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">eBook</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card -->
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                    <div class="relative overflow-hidden h-56">
+                        <img src="https://readdy.ai/api/search-image?query=professional%20software%20box%20packaging%20for%20photo%20editing%20software%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20blue%20and%20purple%20color%20scheme%2C%20high%20quality%20render&width=300&height=400&seq=10&orientation=portrait" alt="Product" class="product-image w-full h-full object-cover object-top">
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-amber-500 text-white text-xs px-2 py-1 rounded">Bestseller</span>
+                        </div>
+                        <div class="quick-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity">
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-heart-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-shopping-cart-2-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center text-yellow-400 mb-2">
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <span class="text-xs text-gray-500 ml-1">(214)</span>
+                        </div>
+                        <h3 class="font-medium mb-1 line-clamp-2 h-12">PhotoPro X5 Suite - Professional Photo Editing</h3>
+                        <p class="text-sm text-gray-500 mb-2">By ImageTech Solutions</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-primary font-bold">$79.99</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">$129.99</span>
+                            </div>
+                            <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded">Software</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card -->
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                    <div class="relative overflow-hidden h-56">
+                        <img src="https://readdy.ai/api/search-image?query=professional%20ebook%20cover%20for%20business%20strategy%20book%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20dark%20blue%20and%20white%20color%20scheme%2C%20high%20quality%20render&width=300&height=400&seq=11&orientation=portrait" alt="Product" class="product-image w-full h-full object-cover object-top">
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-amber-500 text-white text-xs px-2 py-1 rounded">Bestseller</span>
+                        </div>
+                        <div class="quick-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity">
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-heart-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-shopping-cart-2-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center text-yellow-400 mb-2">
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-line text-sm"></i>
+                            <span class="text-xs text-gray-500 ml-1">(97)</span>
+                        </div>
+                        <h3 class="font-medium mb-1 line-clamp-2 h-12">Business Growth Strategies: Scaling Your Company</h3>
+                        <p class="text-sm text-gray-500 mb-2">By Jennifer Roberts, MBA</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-primary font-bold">$19.99</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">$29.99</span>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">eBook</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card -->
+                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                    <div class="relative overflow-hidden h-56">
+                        <img src="https://readdy.ai/api/search-image?query=professional%20ebook%20cover%20for%20digital%20marketing%20book%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20orange%20and%20white%20color%20scheme%2C%20high%20quality%20render&width=300&height=400&seq=12&orientation=portrait" alt="Product" class="product-image w-full h-full object-cover object-top">
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-amber-500 text-white text-xs px-2 py-1 rounded">Bestseller</span>
+                        </div>
+                        <div class="quick-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transition-opacity">
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-eye-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-heart-line"></i>
+                            </button>
+                            <button class="bg-white rounded-full w-10 h-10 flex items-center justify-center mx-1 hover:bg-primary hover:text-white transition-colors">
+                                <i class="ri-shopping-cart-2-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center text-yellow-400 mb-2">
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-fill text-sm"></i>
+                            <i class="ri-star-half-fill text-sm"></i>
+                            <span class="text-xs text-gray-500 ml-1">(156)</span>
+                        </div>
+                        <h3 class="font-medium mb-1 line-clamp-2 h-12">Digital Marketing Mastery: SEO, Social Media & More</h3>
+                        <p class="text-sm text-gray-500 mb-2">By Alex Rodriguez</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-primary font-bold">$22.99</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">$32.99</span>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">eBook</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Special Deals -->
+    <section class="py-12 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center">
+                <div class="w-1/2 pr-8">
+                    <span class="inline-block bg-yellow-400 text-indigo-900 text-sm font-bold px-3 py-1 rounded-full mb-4">Limited Time Offer</span>
+                    <h2 class="text-3xl font-bold mb-4">Spring Bundle Sale</h2>
+                    <p class="text-indigo-100 mb-6">Get our top 10 productivity tools and eBooks at an incredible 70% discount. Perfect for professionals looking to boost their skills and efficiency.</p>
+                    <div class="flex items-center mb-6">
+                        <div class="text-4xl font-bold mr-4">$49.99</div>
+                        <div class="text-xl text-indigo-200 line-through">$169.99</div>
+                        <div class="ml-4 bg-white text-indigo-600 text-sm font-bold px-3 py-1 rounded-full">Save 70%</div>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button class="bg-white text-indigo-600 px-6 py-3 font-medium !rounded-button whitespace-nowrap">View Bundle</button>
+                        <button class="bg-indigo-500 bg-opacity-30 border border-indigo-300 text-white px-6 py-3 font-medium !rounded-button whitespace-nowrap">Add to Cart</button>
+                    </div>
+                    <div class="mt-6 text-sm text-indigo-200">
+                        <div class="flex items-center mb-1">
+                            <i class="ri-timer-line mr-2"></i> Offer ends in: <span class="font-medium ml-1">2 days 14:35:22</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="ri-shopping-bag-line mr-2"></i> <span class="font-medium">243</span> bundles sold
+                        </div>
+                    </div>
+                </div>
+                <div class="w-1/2 pl-8">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg backdrop-blur-sm">
+                            <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-white mb-3">
+                                <i class="ri-book-open-line"></i>
+                            </div>
+                            <h3 class="font-medium mb-1">5 Premium eBooks</h3>
+                            <p class="text-xs text-indigo-200">Business, tech, and productivity</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg backdrop-blur-sm">
+                            <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-white mb-3">
+                                <i class="ri-computer-line"></i>
+                            </div>
+                            <h3 class="font-medium mb-1">3 Software Tools</h3>
+                            <p class="text-xs text-indigo-200">Project management & design</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg backdrop-blur-sm">
+                            <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-white mb-3">
+                                <i class="ri-video-line"></i>
+                            </div>
+                            <h3 class="font-medium mb-1">10+ Hours of Video</h3>
+                            <p class="text-xs text-indigo-200">Expert tutorials & guides</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg backdrop-blur-sm">
+                            <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-white mb-3">
+                                <i class="ri-customer-service-2-line"></i>
+                            </div>
+                            <h3 class="font-medium mb-1">Premium Support</h3>
+                            <p class="text-xs text-indigo-200">1 year of dedicated help</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Customer Reviews -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-12">What Our Customers Say</h2>
+            
+            <div class="grid grid-cols-3 gap-8">
+                <!-- Review Card -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center text-yellow-400 mb-4">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"The Advanced JavaScript Techniques eBook completely transformed my development workflow. The code examples are practical and the explanations are crystal clear. Worth every penny!"</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-500 font-medium">RJ</div>
+                        <div class="ml-3">
+                            <h4 class="font-medium">Robert Jackson</h4>
+                            <p class="text-xs text-gray-500">Senior Web Developer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review Card -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center text-yellow-400 mb-4">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-half-fill"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"PhotoPro X5 Suite has been a game-changer for my design business. The interface is intuitive, and the new AI-powered features save me hours of work. Customer support is also excellent."</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-500 font-medium">AW</div>
+                        <div class="ml-3">
+                            <h4 class="font-medium">Amanda Wilson</h4>
+                            <p class="text-xs text-gray-500">Graphic Designer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review Card -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center text-yellow-400 mb-4">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"I've purchased several eBooks on business growth, but this one stands out. The strategies are actionable and have already helped me increase my company's revenue by 32% in just three months."</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-500 font-medium">ML</div>
+                        <div class="ml-3">
+                            <h4 class="font-medium">Marcus Lee</h4>
+                            <p class="text-xs text-gray-500">Small Business Owner</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-2xl font-bold mb-4">Stay Updated with New Releases</h2>
+                <p class="text-gray-600 mb-8">Subscribe to our newsletter and get 10% off your first purchase, plus early access to new products and exclusive deals.</p>
+                
+                <div class="flex">
+                    <input type="email" placeholder="Your email address" class="flex-1 py-3 px-4 border border-gray-200 rounded-l-button text-sm">
+                    <button class="bg-primary text-white px-6 py-3 font-medium rounded-r-button whitespace-nowrap">Subscribe</button>
+                </div>
+                
+                <div class="mt-4 text-sm text-gray-500 flex items-center justify-center">
+                    <label class="flex items-center cursor-pointer">
+                        <span class="custom-checkbox">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                        </span>
+                        I agree to receive promotional emails and accept the <a href="#" class="text-primary hover:underline">Privacy Policy</a>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-5 gap-8 mb-12">
+                <!-- Company Info -->
+                <div class="col-span-2">
+                    <a href="#" class="text-2xl font-['Pacifico'] text-white mb-4 inline-block">logo</a>
+                    <p class="mb-6 text-gray-400">Your one-stop destination for premium digital products, including eBooks, software, and educational resources.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                            <i class="ri-twitter-x-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                            <i class="ri-instagram-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                            <i class="ri-linkedin-fill"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-white font-medium mb-4">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Products</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Bestsellers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">New Releases</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Special Deals</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Customer Service -->
+                <div>
+                    <h3 class="text-white font-medium mb-4">Customer Service</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">FAQs</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Shipping Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Returns & Refunds</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-white font-medium mb-4">Contact Info</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="ri-map-pin-line mt-1 mr-3"></i>
+                            <span>1234 Digital Avenue, Suite 500<br>San Francisco, CA 94107</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ri-phone-line mr-3"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ri-mail-line mr-3"></i>
+                            <span>support@digitalstore.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ri-time-line mr-3"></i>
+                            <span>Mon-Fri: 9AM - 6PM EST</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Footer -->
+            <div class="pt-8 border-t border-gray-800 flex flex-wrap justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p>&copy; 2025 Digital Store. All rights reserved.</p>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm">We Accept:</span>
+                    <div class="flex space-x-3">
+                        <i class="ri-visa-fill text-xl"></i>
+                        <i class="ri-mastercard-fill text-xl"></i>
+                        <i class="ri-paypal-fill text-xl"></i>
+                        <i class="ri-apple-fill text-xl"></i>
+                        <i class="ri-amazon-fill text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Slide-in Cart -->
+    <div class="slide-cart fixed top-0 right-0 h-full w-96 bg-white shadow-xl z-50 overflow-hidden">
+        <div class="h-full flex flex-col">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="font-medium text-lg">Your Cart (3 items)</h3>
+                <button class="close-cart w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                    <i class="ri-close-line text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4">
+                <!-- Cart Item -->
+                <div class="flex py-4 border-b">
+                    <img src="https://readdy.ai/api/search-image?query=professional%20ebook%20cover%20for%20programming%20book%20with%20clean%20modern%20design%2C%20minimalist%20style%2C%20blue%20color%20scheme&width=80&height=100&seq=13&orientation=portrait" alt="Product" class="w-16 h-20 object-cover object-top rounded">
+                    <div class="ml-4 flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">Advanced JavaScript Techniques</h4>
+                            <button class="text-gray-400 hover:text-gray-600 w-6 h-6 flex items-center justify-center">
+                                <i class="ri-close-line"></i>
+                            </button>
+                        </div>
+                        <div class="text-sm text-gray-500 mb-2">eBook</div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center border rounded">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700">
+                                    <i class="ri-subtract-line"></i>
+                                </button>
+                                <input type="number" value="1" class="w-10 text-center border-none text-sm" min="1">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </div>
+                            <div class="font-medium text-primary">$24.99</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cart Item -->
+                <div class="flex py-4 border-b">
+                    <img src="https://readdy.ai/api/search-image?query=professional%20software%20box%20packaging%20for%20photo%20editing%20software%20with%20clean%20modern%20design%2C%20minimalist%20style&width=80&height=100&seq=14&orientation=portrait" alt="Product" class="w-16 h-20 object-cover object-top rounded">
+                    <div class="ml-4 flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">PhotoPro X5 Suite</h4>
+                            <button class="text-gray-400 hover:text-gray-600 w-6 h-6 flex items-center justify-center">
+                                <i class="ri-close-line"></i>
+                            </button>
+                        </div>
+                        <div class="text-sm text-gray-500 mb-2">Software</div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center border rounded">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700">
+                                    <i class="ri-subtract-line"></i>
+                                </button>
+                                <input type="number" value="1" class="w-10 text-center border-none text-sm" min="1">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </div>
+                            <div class="font-medium text-primary">$79.99</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cart Item -->
+                <div class="flex py-4">
+                    <img src="https://readdy.ai/api/search-image?query=professional%20ebook%20cover%20for%20business%20strategy%20book%20with%20clean%20modern%20design%2C%20minimalist%20style&width=80&height=100&seq=15&orientation=portrait" alt="Product" class="w-16 h-20 object-cover object-top rounded">
+                    <div class="ml-4 flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">Business Growth Strategies</h4>
+                            <button class="text-gray-400 hover:text-gray-600 w-6 h-6 flex items-center justify-center">
+                                <i class="ri-close-line"></i>
+                            </button>
+                        </div>
+                        <div class="text-sm text-gray-500 mb-2">eBook</div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center border rounded">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700">
+                                    <i class="ri-subtract-line"></i>
+                                </button>
+                                <input type="number" value="1" class="w-10 text-center border-none text-sm" min="1">
+                                <button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </div>
+                            <div class="font-medium text-primary">$19.99</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t bg-gray-50">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Subtotal</span>
+                    <span class="font-medium">$124.97</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-600">Estimated Tax</span>
+                    <span class="font-medium">$10.00</span>
+                </div>
+                <div class="flex justify-between mb-6 pb-4 border-b">
+                    <span class="font-medium">Total</span>
+                    <span class="font-bold text-lg">$134.97</span>
+                </div>
+                
+                <button class="w-full py-3 bg-primary text-white font-medium !rounded-button mb-3 whitespace-nowrap">Proceed to Checkout</button>
+                <button class="w-full py-3 border border-gray-200 text-gray-700 font-medium !rounded-button whitespace-nowrap">Continue Shopping</button>
+                
+                <div class="mt-4 flex items-center justify-center text-sm text-gray-500">
+                    <i class="ri-shield-check-line text-green-500 mr-2"></i> Secure Checkout
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Cart Button -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <button class="cart-toggle w-14 h-14 bg-primary rounded-full shadow-lg flex items-center justify-center text-white relative">
+            <i class="ri-shopping-cart-2-line text-xl"></i>
+            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+        </button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartToggle = document.querySelector('.cart-toggle');
+            const slideCart = document.querySelector('.slide-cart');
+            const closeCart = document.querySelector('.close-cart');
+            
+            cartToggle.addEventListener('click', function() {
+                slideCart.classList.add('open');
+            });
+            
+            closeCart.addEventListener('click', function() {
+                slideCart.classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>
