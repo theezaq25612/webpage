@@ -1,0 +1,405 @@
+<!-- The exported code uses Tailwind CSS. Install Tailwind CSS in your dev environment to ensure all styles work. -->
+<template>
+<div v-if="currentPage === 'home'" class="app-container bg-gray-50 min-h-screen relative pb-16">
+<!-- Status Bar -->
+<div class="status-bar bg-white shadow-sm fixed top-0 w-full z-50 px-4 py-3 flex justify-between items-center">
+<div class="text-lg font-medium">14 April</div>
+<div class="flex items-center space-x-4">
+<i class="fas fa-bell text-gray-600 cursor-pointer"></i>
+<i class="fas fa-shopping-cart text-gray-600 cursor-pointer"></i>
+<i class="fas fa-comment text-gray-600 cursor-pointer"></i>
+<div class="relative">
+<div id="profileAvatar" class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white cursor-pointer" @click="toggleDropdown">
+<span class="text-xs">JD</span>
+</div>
+<div v-if="showDropdown" id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50 transform origin-top transition-all duration-200 ease-out">
+<div class="px-4 py-2 border-b border-gray-100">
+<p class="font-medium text-gray-800">John Doe</p>
+<p class="text-xs text-gray-500">john.doe@example.com</p>
+</div>
+<a href="https://readdy.ai/home/6d91839e-47f6-48e0-a8bb-da78df8fb73f/1e88a791-7d21-443a-a0c7-00c82eace57c" data-readdy="true" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+<i class="fas fa-user w-5 text-gray-400"></i>
+<span class="ml-3">My Profile</span>
+</a>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+<i class="fas fa-cog w-5 text-gray-400"></i>
+<span class="ml-3">Account Settings</span>
+</a>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+<i class="fas fa-sliders-h w-5 text-gray-400"></i>
+<span class="ml-3">Preferences</span>
+</a>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+<i class="fas fa-bell w-5 text-gray-400"></i>
+<span class="ml-3">Notifications</span>
+</a>
+<a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+<i class="fas fa-question-circle w-5 text-gray-400"></i>
+<span class="ml-3">Help & Support</span>
+</a>
+<div class="border-t border-gray-100 mt-2">
+<a href="#" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-50 transition-colors" @click="handleLogout">
+<i class="fas fa-sign-out-alt w-5"></i>
+<span class="ml-3">Logout</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="main-content pt-16 px-4 pb-20">
+<div class="welcome-section my-6">
+<h1 class="text-2xl font-bold text-gray-800">Welcome back, John!</h1>
+<p class="text-gray-600 mt-1">Discover our services and get support</p>
+</div>
+<!-- Services Scroll -->
+<div class="mt-6">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-semibold text-gray-800">Our Services</h2>
+<button class="text-indigo-600 text-sm font-medium">View All</button>
+</div>
+<div class="overflow-x-auto hide-scrollbar">
+<div class="flex space-x-4 pb-4">
+<!-- Business Services Card -->
+<div class="service-card bg-gradient-to-br from-fuchsia-100 to-white rounded-2xl shadow-lg p-5 flex flex-col items-center cursor-pointer min-w-[160px]">
+<div class="icon-container w-20 h-20 rounded-xl overflow-hidden mb-4">
+<img :src="businessIconUrl" alt="Business Services" class="w-full h-full object-cover">
+</div>
+<h3 class="font-semibold text-gray-800 text-center">Business Services</h3>
+<p class="text-gray-600 text-xs text-center mt-2 line-clamp-2">Registration, licenses, and business support</p>
+</div>
+<!-- Health Services Card -->
+<div class="service-card bg-gradient-to-br from-cyan-100 to-white rounded-2xl shadow-lg p-5 flex flex-col items-center cursor-pointer min-w-[160px]">
+<div class="icon-container w-20 h-20 rounded-xl overflow-hidden mb-4">
+<img :src="healthIconUrl" alt="Health Services" class="w-full h-full object-cover">
+</div>
+<h3 class="font-semibold text-gray-800 text-center">Health Services</h3>
+<p class="text-gray-600 text-xs text-center mt-2 line-clamp-2">Medical assistance and health resources</p>
+</div>
+<!-- Legal Services Card -->
+<div class="service-card bg-gradient-to-br from-violet-100 to-white rounded-2xl shadow-lg p-5 flex flex-col items-center cursor-pointer min-w-[160px]">
+<div class="icon-container w-20 h-20 rounded-xl overflow-hidden mb-4">
+<img :src="legalIconUrl" alt="Legal Services" class="w-full h-full object-cover">
+</div>
+<h3 class="font-semibold text-gray-800 text-center">Legal Services</h3>
+<p class="text-gray-600 text-xs text-center mt-2 line-clamp-2">Legal advice and document assistance</p>
+</div>
+<!-- Store Card -->
+<a href="https://readdy.ai/home/6d91839e-47f6-48e0-a8bb-da78df8fb73f/a4747e4a-6b8e-4e97-81bc-012e6c27a4d3" data-readdy="true" class="block">
+<div class="service-card bg-gradient-to-br from-emerald-100 to-white rounded-2xl shadow-lg p-5 flex flex-col items-center cursor-pointer min-w-[160px]">
+<div class="icon-container w-20 h-20 rounded-xl overflow-hidden mb-4">
+<img :src="storeIconUrl" alt="Store" class="w-full h-full object-cover">
+</div>
+<h3 class="font-semibold text-gray-800 text-center">Store</h3>
+<p class="text-gray-600 text-xs text-center mt-2 line-clamp-2">Shop products and essential items</p>
+</div>
+</a>
+<!-- Library Card -->
+<div class="service-card bg-gradient-to-br from-amber-100 to-white rounded-2xl shadow-lg p-5 flex flex-col items-center cursor-pointer min-w-[160px]">
+<div class="icon-container w-20 h-20 rounded-xl overflow-hidden mb-4">
+<img :src="libraryIconUrl" alt="Library" class="w-full h-full object-cover">
+</div>
+<h3 class="font-semibold text-gray-800 text-center">Library</h3>
+<p class="text-gray-600 text-xs text-center mt-2 line-clamp-2">Access books, resources and research</p>
+</div>
+<!-- Accommodation Card -->
+<div class="service-card bg-gradient-to-br from-rose-100 to-white rounded-2xl shadow-lg p-5 flex flex-col items-center cursor-pointer min-w-[160px]">
+<div class="icon-container w-20 h-20 rounded-xl overflow-hidden mb-4">
+<img :src="accommodationIconUrl" alt="Accommodation" class="w-full h-full object-cover">
+</div>
+<h3 class="font-semibold text-gray-800 text-center">Accommodation</h3>
+<p class="text-gray-600 text-xs text-center mt-2 line-clamp-2">Find housing and temporary stays</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity Section -->
+<div class="recent-activity mt-8">
+<h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
+<div class="activity-list space-y-3">
+<div class="activity-item bg-white rounded-lg shadow-sm p-3 flex items-center">
+<div class="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center mr-3">
+<i class="fas fa-calendar-check text-blue-600"></i>
+</div>
+<div class="flex-1">
+<h4 class="font-medium text-gray-800">Health Consultation</h4>
+<p class="text-xs text-gray-500">Scheduled for April 16, 2025 at 10:30 AM</p>
+</div>
+</div>
+<div class="activity-item bg-white rounded-lg shadow-sm p-3 flex items-center">
+<div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-3">
+<i class="fas fa-book text-yellow-600"></i>
+</div>
+<div class="flex-1">
+<h4 class="font-medium text-gray-800">Library Book Return</h4>
+<p class="text-xs text-gray-500">Due on April 15, 2025</p>
+</div>
+</div>
+<div class="activity-item bg-white rounded-lg shadow-sm p-3 flex items-center">
+<div class="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center mr-3">
+<i class="fas fa-shopping-bag text-purple-600"></i>
+</div>
+<div class="flex-1">
+<h4 class="font-medium text-gray-800">Store Purchase</h4>
+<p class="text-xs text-gray-500">Order #45892 - Delivered on April 10, 2025</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="bottom-nav bg-white shadow-lg fixed bottom-0 w-full z-50 flex justify-between items-center px-2 py-2">
+<div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+<i class="fas fa-shopping-bag text-indigo-600"></i>
+<span class="text-xs mt-1 text-indigo-600 font-medium">Orders</span>
+</div>
+<div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer" @click="currentPage = 'appointments'">
+<i class="fas fa-calendar-alt" :class="currentPage === 'appointments' ? 'text-indigo-600' : 'text-gray-500'"></i>
+<span class="text-xs mt-1" :class="currentPage === 'appointments' ? 'text-indigo-600' : 'text-gray-500'">Appointments</span>
+</div>
+<div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+<i class="fas fa-chart-line text-gray-500"></i>
+<span class="text-xs mt-1 text-gray-500">Dashboard</span>
+</div>
+<div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+<i class="fas fa-headset text-gray-500"></i>
+<span class="text-xs mt-1 text-gray-500">Support</span>
+</div>
+</div>
+</div>
+<!-- Appointments Page -->
+<div v-else-if="currentPage === 'appointments'" class="app-container bg-gray-50 min-h-screen relative pb-16">
+<!-- Status Bar -->
+<div class="status-bar bg-white shadow-sm fixed top-0 w-full z-50 px-4 py-3 flex justify-between items-center">
+<div class="text-lg font-medium">Appointments</div>
+<div class="flex items-center space-x-4">
+<button class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm !rounded-button">
+<i class="fas fa-plus mr-1"></i>New
+</button>
+</div>
+</div>
+<!-- Main Content -->
+<div class="main-content pt-16 px-4 pb-20">
+<!-- Date Selector -->
+<div class="date-selector bg-white rounded-xl shadow-sm p-4 mb-6">
+<div class="flex justify-between items-center mb-4">
+<button class="text-gray-600"><i class="fas fa-chevron-left"></i></button>
+<h3 class="text-lg font-semibold">April 2025</h3>
+<button class="text-gray-600"><i class="fas fa-chevron-right"></i></button>
+</div>
+<div class="flex justify-between">
+<div v-for="(day, index) in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']" :key="index"
+class="flex-1 text-center text-sm text-gray-500">
+{{ day }}
+</div>
+</div>
+<div class="grid grid-cols-7 gap-1 mt-2">
+<div v-for="date in 31" :key="date"
+:class="[
+'aspect-square flex items-center justify-center rounded-full cursor-pointer text-sm',
+date === 14 ? 'bg-indigo-600 text-white' : 'hover:bg-gray-100'
+]">
+{{ date }}
+</div>
+</div>
+</div>
+<!-- Appointments List -->
+<div class="appointments-list space-y-4">
+<div class="bg-white rounded-xl shadow-sm p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h4 class="font-semibold text-gray-800">Health Consultation</h4>
+<p class="text-sm text-gray-500">Dr. Sarah Wilson</p>
+</div>
+<div class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Confirmed</div>
+</div>
+<div class="flex items-center text-sm text-gray-600">
+<i class="fas fa-clock mr-2"></i>
+<span>10:30 AM - 11:30 AM</span>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-sm p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h4 class="font-semibold text-gray-800">Legal Consultation</h4>
+<p class="text-sm text-gray-500">Atty. Michael Brown</p>
+</div>
+<div class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Pending</div>
+</div>
+<div class="flex items-center text-sm text-gray-600">
+<i class="fas fa-clock mr-2"></i>
+<span>2:00 PM - 3:00 PM</span>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-sm p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h4 class="font-semibold text-gray-800">Business Advisory</h4>
+<p class="text-sm text-gray-500">Ms. Jennifer Lee</p>
+</div>
+<div class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Completed</div>
+</div>
+<div class="flex items-center text-sm text-gray-600">
+<i class="fas fa-clock mr-2"></i>
+<span>4:30 PM - 5:30 PM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="bottom-nav bg-white shadow-lg fixed bottom-0 w-full z-50 flex justify-between items-center px-2 py-2">
+<div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer" @click="currentPage = 'home'">
+<i class="fas fa-shopping-bag text-gray-500"></i>
+<span class="text-xs mt-1 text-gray-500">Orders</span>
+</div>
+<div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+<i class="fas fa-calendar-alt text-indigo-600"></i>
+<span class="text-xs mt-1 text-indigo-600">Appointments</span>
+</div>
+<div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+<i class="fas fa-chart-line text-gray-500"></i>
+<span class="text-xs mt-1 text-gray-500">Dashboard</span>
+</div>
+<div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+<i class="fas fa-headset text-gray-500"></i>
+<span class="text-xs mt-1 text-gray-500">Support</span>
+</div>
+</div>
+</div>
+</template>
+<script>
+export default {
+name: 'App',
+mounted() {
+document.addEventListener('click', this.handleClickOutside);
+},
+beforeDestroy() {
+document.removeEventListener('click', this.handleClickOutside);
+},
+methods: {
+toggleDropdown() {
+this.showDropdown = !this.showDropdown;
+},
+handleClickOutside(event) {
+const dropdown = document.getElementById('profileDropdown');
+const avatar = document.getElementById('profileAvatar');
+if (this.showDropdown && dropdown && !dropdown.contains(event.target) && !avatar.contains(event.target)) {
+this.showDropdown = false;
+}
+},
+handleLogout() {
+this.showDropdown = false;
+// Add logout logic here
+}
+},
+data() {
+return {
+showDropdown: false,
+currentPage: 'home',
+businessIconUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20business%20documents%20and%20briefcase%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality%2C%20clean%20and%20modern%20look%2C%20single%20object%20focus&width=200&height=200&seq=1001&orientation=squarish',
+healthIconUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20medical%20cross%20and%20stethoscope%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality%2C%20clean%20and%20modern%20look%2C%20single%20object%20focus&width=200&height=200&seq=1002&orientation=squarish',
+legalIconUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20legal%20scales%20and%20gavel%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality%2C%20clean%20and%20modern%20look%2C%20single%20object%20focus&width=200&height=200&seq=1003&orientation=squarish',
+storeIconUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20shopping%20cart%20and%20store%20bag%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality%2C%20clean%20and%20modern%20look%2C%20single%20object%20focus&width=200&height=200&seq=1004&orientation=squarish',
+libraryIconUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20stack%20of%20books%20and%20bookshelf%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality%2C%20clean%20and%20modern%20look%2C%20single%20object%20focus&width=200&height=200&seq=1005&orientation=squarish',
+accommodationIconUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20house%20and%20key%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality%2C%20clean%20and%20modern%20look%2C%20single%20object%20focus&width=200&height=200&seq=1006&orientation=squarish'
+};
+}
+};
+</script>
+<style scoped>
+@keyframes dropdownFadeIn {
+from {
+opacity: 0;
+transform: translateY(-10px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+#profileDropdown {
+animation: dropdownFadeIn 0.2s ease-out;
+}
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(20px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+@keyframes pulse {
+0% {
+transform: scale(1);
+}
+50% {
+transform: scale(1.05);
+}
+100% {
+transform: scale(1);
+}
+}
+@keyframes slideIn {
+from {
+transform: translateX(-100%);
+opacity: 0;
+}
+to {
+transform: translateX(0);
+opacity: 1;
+}
+}
+.app-container {
+font-family: 'Inter', sans-serif;
+max-width: 375px;
+margin: 0 auto;
+min-height: 762px;
+}
+.welcome-section {
+animation: fadeInUp 0.8s ease-out;
+}
+.service-card {
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+animation: fadeInUp 0.8s ease-out backwards;
+}
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+.service-card:nth-child(5) { animation-delay: 0.5s; }
+.service-card:nth-child(6) { animation-delay: 0.6s; }
+.service-card:hover, .service-card:active {
+transform: translateY(-8px) scale(1.02);
+box-shadow: 0 25px 30px -12px rgba(0, 0, 0, 0.15);
+}
+.icon-container {
+animation: pulse 2s infinite;
+}
+.nav-item {
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-item:hover {
+transform: translateY(-2px);
+}
+.activity-item {
+animation: slideIn 0.6s ease-out backwards;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.activity-item:nth-child(1) { animation-delay: 0.1s; }
+.activity-item:nth-child(2) { animation-delay: 0.2s; }
+.activity-item:nth-child(3) { animation-delay: 0.3s; }
+.activity-item:hover, .activity-item:active {
+transform: translateX(4px);
+box-shadow: 0 8px 16px -4px rgba(99, 102, 241, 0.15);
+}
+.hide-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+display: none;
+}
+</style>
