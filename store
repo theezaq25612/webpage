@@ -1,0 +1,469 @@
+<!-- The exported code uses Tailwind CSS. Install Tailwind CSS in your dev environment to ensure all styles work. -->
+
+<template>
+  <div class="app-container bg-gray-50 min-h-screen relative pb-16">
+    <!-- Header with Search and Cart -->
+    <div class="header bg-white shadow-sm fixed top-0 w-full z-50 px-4 py-3">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <a href="https://readdy.ai/home/6d91839e-47f6-48e0-a8bb-da78df8fb73f/b1ca48b3-a10e-4a40-8a68-931b0b2ea349" data-readdy="true" class="mr-3">
+            <i class="fas fa-arrow-left text-gray-600 cursor-pointer"></i>
+          </a>
+          <div class="text-lg font-medium">Store</div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <i class="fas fa-search text-gray-600 cursor-pointer" @click="toggleSearch"></i>
+          <div class="relative">
+            <i class="fas fa-shopping-cart text-gray-600 cursor-pointer"></i>
+            <div class="absolute -top-2 -right-2 w-5 h-5 bg-indigo-600 rounded-full flex items-center justify-center">
+              <span class="text-xs text-white">{{ cartCount }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Search Bar -->
+      <div v-if="showSearch" class="search-bar mt-3 animate-fadeIn">
+        <div class="relative">
+          <input 
+            type="text" 
+            placeholder="Search products..." 
+            class="w-full py-2 pl-10 pr-4 rounded-full bg-gray-100 border-none text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            v-model="searchQuery"
+          >
+          <i class="fas fa-search absolute left-3 top-2.5 text-gray-500"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content pt-16 px-4 pb-20">
+      <!-- Category Navigation -->
+      <div class="category-nav mt-6 bg-white rounded-lg shadow-sm sticky top-16 z-40">
+        <div class="overflow-x-auto hide-scrollbar">
+          <div class="flex py-3">
+            <div 
+              v-for="(category, index) in categories" 
+              :key="index"
+              class="category-tab px-4 py-2 whitespace-nowrap cursor-pointer"
+              :class="selectedCategory === category ? 'text-indigo-600 border-b-2 border-indigo-600 font-medium' : 'text-gray-600'"
+              @click="selectedCategory = category"
+            >
+              {{ category }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter and Sort Section -->
+      <div class="filter-sort bg-gray-100 rounded-lg mt-3 p-3 flex justify-between items-center">
+        <button class="flex items-center text-gray-700 text-sm !rounded-button">
+          <i class="fas fa-filter mr-2"></i>
+          Filter
+        </button>
+        <div class="relative">
+          <button class="flex items-center text-gray-700 text-sm !rounded-button" @click="toggleSortOptions">
+            <span>Sort by: {{ selectedSort }}</span>
+            <i class="fas fa-chevron-down ml-2 text-xs"></i>
+          </button>
+          <div v-if="showSortOptions" class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-50">
+            <div 
+              v-for="(option, index) in sortOptions" 
+              :key="index"
+              class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+              @click="selectSortOption(option)"
+            >
+              {{ option }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Products Banner -->
+      <div class="featured-banner mt-6 relative rounded-xl overflow-hidden shadow-md">
+        <img 
+          :src="featuredBannerUrl" 
+          alt="Special Offers" 
+          class="w-full h-40 object-cover"
+        >
+        <div class="absolute inset-0 bg-gradient-to-r from-indigo-900/70 to-transparent flex flex-col justify-end p-4">
+          <h3 class="text-white text-xl font-bold">Special Offers</h3>
+          <p class="text-white text-sm mt-1">Up to 40% off on selected items</p>
+          <button class="bg-white text-indigo-600 px-4 py-1.5 rounded-full text-sm font-medium mt-3 w-max !rounded-button">
+            Shop Now
+          </button>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-section mt-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ selectedCategory === 'All' ? 'Featured Products' : selectedCategory }}</h2>
+        <div class="products-grid grid grid-cols-2 gap-4">
+          <div 
+            v-for="(product, index) in filteredProducts" 
+            :key="index"
+            class="product-card bg-white rounded-xl shadow-sm overflow-hidden transform transition-transform hover:scale-105"
+          >
+            <div class="product-image h-40 overflow-hidden">
+              <img :src="product.imageUrl" :alt="product.name" class="w-full h-full object-cover object-top">
+            </div>
+            <div class="product-details p-3">
+              <h3 class="font-medium text-gray-800 line-clamp-2 h-12">{{ product.name }}</h3>
+              <div class="flex justify-between items-center mt-2">
+                <div class="price font-bold text-gray-900">${{ product.price.toFixed(2) }}</div>
+                <button 
+                  class="add-to-cart bg-indigo-600 text-white p-2 rounded-full !rounded-button"
+                  @click="addToCart(product)"
+                >
+                  <i class="fas fa-plus text-xs"></i>
+                </button>
+              </div>
+              <div class="flex items-center mt-2">
+                <div class="flex">
+                  <i v-for="n in 5" :key="n" class="fas fa-star text-xs" :class="n <= product.rating ? 'text-yellow-400' : 'text-gray-300'"></i>
+                </div>
+                <span class="text-xs text-gray-500 ml-1">({{ product.reviews }})</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories Section -->
+      <div class="categories-section mt-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Shop by Category</h2>
+        <div class="grid grid-cols-4 gap-3">
+          <div 
+            v-for="(category, index) in categoryIcons" 
+            :key="index"
+            class="category-icon flex flex-col items-center"
+          >
+            <div class="icon-container w-16 h-16 rounded-full overflow-hidden mb-2">
+              <img :src="category.imageUrl" :alt="category.name" class="w-full h-full object-cover">
+            </div>
+            <span class="text-xs text-gray-700 text-center whitespace-nowrap overflow-hidden text-overflow-ellipsis w-full">{{ category.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recently Viewed -->
+      <div class="recently-viewed mt-8">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold text-gray-800">Recently Viewed</h2>
+          <button class="text-indigo-600 text-sm font-medium">See All</button>
+        </div>
+        <div class="overflow-x-auto hide-scrollbar">
+          <div class="flex space-x-4 pb-4">
+            <div 
+              v-for="(product, index) in recentlyViewed" 
+              :key="index"
+              class="recent-product bg-white rounded-xl shadow-sm min-w-[140px] overflow-hidden"
+            >
+              <div class="h-24 overflow-hidden">
+                <img :src="product.imageUrl" :alt="product.name" class="w-full h-full object-cover object-top">
+              </div>
+              <div class="p-2">
+                <h3 class="text-sm font-medium text-gray-800 line-clamp-1">{{ product.name }}</h3>
+                <div class="text-sm font-bold text-gray-900 mt-1">${{ product.price.toFixed(2) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav bg-white shadow-lg fixed bottom-0 w-full z-50 flex justify-between items-center px-2 py-2">
+      <div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+        <i class="fas fa-shopping-bag text-indigo-600"></i>
+        <span class="text-xs mt-1 text-indigo-600 font-medium">Orders</span>
+      </div>
+      <div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+        <i class="fas fa-calendar-alt text-gray-500"></i>
+        <span class="text-xs mt-1 text-gray-500">Appointments</span>
+      </div>
+      <div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+        <i class="fas fa-chart-line text-gray-500"></i>
+        <span class="text-xs mt-1 text-gray-500">Dashboard</span>
+      </div>
+      <div class="nav-item flex flex-col items-center px-3 py-1 cursor-pointer">
+        <i class="fas fa-headset text-gray-500"></i>
+        <span class="text-xs mt-1 text-gray-500">Support</span>
+      </div>
+    </div>
+
+    <!-- Add to Cart Notification -->
+    <div 
+      v-if="showCartNotification" 
+      class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg z-50 animate-fadeInUp"
+    >
+      Item added to cart
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      showSearch: false,
+      searchQuery: '',
+      cartCount: 3,
+      selectedCategory: 'All',
+      categories: ['All', 'Essentials', 'Electronics', 'Books', 'Health', 'Home', 'Fashion'],
+      showSortOptions: false,
+      selectedSort: 'Popularity',
+      sortOptions: ['Popularity', 'Price: Low to High', 'Price: High to Low', 'Latest'],
+      showCartNotification: false,
+      featuredBannerUrl: 'https://readdy.ai/api/search-image?query=premium%20electronics%20display%20showcase%20with%20modern%20gadgets%20including%20smartphones%2C%20laptops%2C%20and%20headphones%20arranged%20on%20elegant%20display%20with%20soft%20lighting%2C%20professional%20product%20photography%20with%20shallow%20depth%20of%20field%2C%20high-end%20retail%20environment%20with%20minimalist%20design%2C%20luxury%20tech%20store%20atmosphere&width=800&height=400&seq=2001&orientation=landscape',
+      products: [
+        {
+          name: 'Wireless Noise Cancelling Headphones',
+          price: 249.99,
+          rating: 5,
+          reviews: 128,
+          imageUrl: 'https://readdy.ai/api/search-image?query=premium%20wireless%20headphones%20with%20sleek%20modern%20design%2C%20professional%20product%20photography%20on%20clean%20white%20background%2C%20high-end%20audio%20equipment%20with%20premium%20materials%2C%20detailed%20texture%20visible%2C%20soft%20lighting%20highlighting%20curves%20and%20materials%2C%20commercial%20product%20shot%20for%20e-commerce&width=300&height=300&seq=2002&orientation=squarish'
+        },
+        {
+          name: 'Smart Fitness Tracker with Heart Rate Monitor',
+          price: 89.99,
+          rating: 4,
+          reviews: 75,
+          imageUrl: 'https://readdy.ai/api/search-image?query=modern%20fitness%20tracker%20smartwatch%20with%20heart%20rate%20monitor%20display%2C%20sleek%20design%20with%20silicone%20band%2C%20professional%20product%20photography%20on%20clean%20white%20background%2C%20high-end%20wearable%20technology%2C%20detailed%20screen%20visible%2C%20soft%20lighting%20highlighting%20curves%20and%20materials&width=300&height=300&seq=2003&orientation=squarish'
+        },
+        {
+          name: 'Organic Vitamin C Serum for Face',
+          price: 29.99,
+          rating: 4,
+          reviews: 210,
+          imageUrl: 'https://readdy.ai/api/search-image?query=luxury%20skincare%20vitamin%20c%20serum%20in%20elegant%20glass%20bottle%20with%20dropper%2C%20professional%20beauty%20product%20photography%20on%20clean%20white%20background%2C%20premium%20cosmetic%20packaging%2C%20soft%20lighting%20highlighting%20glass%20texture%20and%20liquid%20inside%2C%20high-end%20beauty%20product%20commercial%20shot&width=300&height=300&seq=2004&orientation=squarish'
+        },
+        {
+          name: 'Portable Bluetooth Speaker Waterproof',
+          price: 59.99,
+          rating: 4,
+          reviews: 89,
+          imageUrl: 'https://readdy.ai/api/search-image?query=modern%20portable%20bluetooth%20speaker%20with%20rugged%20waterproof%20design%2C%20professional%20product%20photography%20on%20clean%20white%20background%2C%20high-end%20audio%20equipment%20with%20premium%20materials%2C%20detailed%20texture%20visible%2C%20soft%20lighting%20highlighting%20curves%20and%20materials%2C%20commercial%20product%20shot%20for%20e-commerce&width=300&height=300&seq=2005&orientation=squarish'
+        },
+        {
+          name: 'Bestselling Novel: The Midnight Library',
+          price: 14.99,
+          rating: 5,
+          reviews: 352,
+          imageUrl: 'https://readdy.ai/api/search-image?query=hardcover%20book%20with%20elegant%20cover%20design%2C%20professional%20book%20photography%20on%20clean%20white%20background%2C%20premium%20book%20with%20dust%20jacket%2C%20detailed%20cover%20art%20visible%2C%20soft%20lighting%20highlighting%20book%20edges%20and%20texture%2C%20commercial%20product%20shot%20for%20bookstore&width=300&height=300&seq=2006&orientation=squarish'
+        },
+        {
+          name: 'Stainless Steel Water Bottle',
+          price: 24.99,
+          rating: 4,
+          reviews: 67,
+          imageUrl: 'https://readdy.ai/api/search-image?query=modern%20stainless%20steel%20water%20bottle%20with%20sleek%20design%2C%20professional%20product%20photography%20on%20clean%20white%20background%2C%20high-end%20reusable%20bottle%2C%20detailed%20texture%20visible%2C%20soft%20lighting%20highlighting%20curves%20and%20materials%2C%20commercial%20product%20shot%20for%20e-commerce&width=300&height=300&seq=2007&orientation=squarish'
+        }
+      ],
+      categoryIcons: [
+        {
+          name: 'Essentials',
+          imageUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20essential%20household%20items%20collection%20with%20soap%2C%20toothpaste%20and%20paper%20towels%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality&width=200&height=200&seq=2008&orientation=squarish'
+        },
+        {
+          name: 'Electronics',
+          imageUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20modern%20electronics%20collection%20with%20smartphone%2C%20laptop%20and%20headphones%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality&width=200&height=200&seq=2009&orientation=squarish'
+        },
+        {
+          name: 'Books',
+          imageUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20stack%20of%20colorful%20books%20with%20bookmark%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality&width=200&height=200&seq=2010&orientation=squarish'
+        },
+        {
+          name: 'Health',
+          imageUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20health%20and%20wellness%20items%20with%20vitamin%20bottle%2C%20stethoscope%20and%20apple%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality&width=200&height=200&seq=2011&orientation=squarish'
+        },
+        {
+          name: 'Home',
+          imageUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20home%20decor%20items%20with%20small%20plant%2C%20lamp%20and%20cushion%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality&width=200&height=200&seq=2012&orientation=squarish'
+        },
+        {
+          name: 'Fashion',
+          imageUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20fashion%20accessories%20with%20sunglasses%2C%20watch%20and%20handbag%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality&width=200&height=200&seq=2013&orientation=squarish'
+        },
+        {
+          name: 'Sports',
+          imageUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20sports%20equipment%20with%20basketball%2C%20tennis%20racket%20and%20running%20shoe%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality&width=200&height=200&seq=2014&orientation=squarish'
+        },
+        {
+          name: 'Beauty',
+          imageUrl: 'https://readdy.ai/api/search-image?query=icon%2C%203D%20cartoon%2C%20beauty%20products%20with%20lipstick%2C%20perfume%20bottle%20and%20makeup%20brush%2C%20subject%20fills%2080%20percent%20of%20frame%2C%20vibrant%20colors%20with%20soft%20gradients%2C%20minimalist%20design%2C%20smooth%20rounded%20shapes%2C%20subtle%20shading%2C%20no%20outlines%2C%20centered%20composition%2C%20isolated%20on%20white%20background%2C%20playful%20and%20friendly%20aesthetic%2C%20isometric%20perspective%2C%20high%20detail%20quality&width=200&height=200&seq=2015&orientation=squarish'
+        }
+      ],
+      recentlyViewed: [
+        {
+          name: 'Organic Green Tea (20 Bags)',
+          price: 12.99,
+          imageUrl: 'https://readdy.ai/api/search-image?query=premium%20organic%20green%20tea%20packaging%20with%20elegant%20design%2C%20professional%20product%20photography%20on%20clean%20white%20background%2C%20high-end%20tea%20box%20with%20visible%20tea%20bags%2C%20detailed%20packaging%20visible%2C%20soft%20lighting%20highlighting%20product%20details%2C%20commercial%20food%20product%20shot&width=200&height=200&seq=2016&orientation=squarish'
+        },
+        {
+          name: 'Wireless Charging Pad',
+          price: 29.99,
+          imageUrl: 'https://readdy.ai/api/search-image?query=modern%20wireless%20charging%20pad%20with%20sleek%20design%2C%20professional%20product%20photography%20on%20clean%20white%20background%2C%20high-end%20tech%20accessory%2C%20detailed%20texture%20visible%2C%20soft%20lighting%20highlighting%20curves%20and%20materials%2C%20commercial%20product%20shot%20for%20e-commerce&width=200&height=200&seq=2017&orientation=squarish'
+        },
+        {
+          name: 'Bamboo Toothbrush Set',
+          price: 9.99,
+          imageUrl: 'https://readdy.ai/api/search-image?query=eco-friendly%20bamboo%20toothbrush%20set%20with%20minimalist%20packaging%2C%20professional%20product%20photography%20on%20clean%20white%20background%2C%20sustainable%20bathroom%20products%2C%20detailed%20natural%20texture%20visible%2C%20soft%20lighting%20highlighting%20wooden%20material%2C%20commercial%20product%20shot%20for%20e-commerce&width=200&height=200&seq=2018&orientation=squarish'
+        },
+        {
+          name: 'Leather Wallet',
+          price: 39.99,
+          imageUrl: 'https://readdy.ai/api/search-image?query=premium%20leather%20wallet%20with%20elegant%20stitching%20details%2C%20professional%20product%20photography%20on%20clean%20white%20background%2C%20high-end%20fashion%20accessory%2C%20detailed%20leather%20grain%20visible%2C%20soft%20lighting%20highlighting%20texture%20and%20craftsmanship%2C%20commercial%20product%20shot%20for%20e-commerce&width=200&height=200&seq=2019&orientation=squarish'
+        }
+      ]
+    };
+  },
+  computed: {
+    filteredProducts() {
+      if (this.selectedCategory === 'All') {
+        return this.products;
+      }
+      
+      // This is a simplified filter - in a real app you'd have category data for each product
+      return this.products.filter((_, index) => index % 2 === 0);
+    }
+  },
+  methods: {
+    toggleSearch() {
+      this.showSearch = !this.showSearch;
+      if (this.showSearch) {
+        this.$nextTick(() => {
+          document.querySelector('input[type="text"]').focus();
+        });
+      }
+    },
+    toggleSortOptions() {
+      this.showSortOptions = !this.showSortOptions;
+    },
+    selectSortOption(option) {
+      this.selectedSort = option;
+      this.showSortOptions = false;
+      
+      // Here you would implement actual sorting logic
+    },
+    addToCart(product) {
+      this.cartCount++;
+      this.showCartNotification = true;
+      
+      // Hide notification after 2 seconds
+      setTimeout(() => {
+        this.showCartNotification = false;
+      }, 2000);
+    }
+  },
+  mounted() {
+    document.addEventListener('click', (event) => {
+      const sortDropdown = document.querySelector('.sort-dropdown');
+      if (this.showSortOptions && event.target.closest('.relative') === null) {
+        this.showSortOptions = false;
+      }
+    });
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.handleClickOutside);
+  }
+};
+</script>
+
+<style scoped>
+.app-container {
+  font-family: 'Inter', sans-serif;
+  max-width: 375px;
+  margin: 0 auto;
+  min-height: 762px;
+}
+
+.header {
+  height: auto;
+}
+
+.category-tab {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.product-card {
+  transition: all 0.3s ease;
+}
+
+.add-to-cart {
+  transition: all 0.2s ease;
+}
+
+.add-to-cart:active {
+  transform: scale(0.95);
+}
+
+.nav-item {
+  transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+  transform: translateY(-2px);
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.line-clamp-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.3s ease-in-out;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>
+
